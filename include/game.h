@@ -24,9 +24,12 @@ enum Color {
     back    = RGB(187, 173, 160),
 };
 
+enum GenNewNumMode {one, two};
+
 class Game2048 {
 private:
     // 数值相关
+    GenNewNumMode _genMode = one;
     int _maxGrid;               // 尺寸
     int _maxPower;              // 最大幂次
     std::vector<int> _gridVal;       // 格内所有可能值
@@ -43,8 +46,9 @@ public:
     Game2048();                             // 默认初始化
     Game2048(int maxGrid, int maxPower);    // 带参初始化
 
-    std::vector<POINT> EmptyGrid();
+    std::vector<POINT> EmptyGrid();         // 获取空白格的坐标
 
+    int NewNum(int mode);                   // 生成新数的模式
     void CreateNumber(std::vector<POINT> emptyPos);  // 在空白位置随机生成新的数
     void CreateNumber(int row, int col);        // 在指定位置生成新的数
 

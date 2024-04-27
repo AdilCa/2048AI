@@ -6,10 +6,12 @@
 #include <vector>
 #include <cmath>
 #include <random>
+#include <conio.h>
 
 using namespace std;
 
-Color colorArr[13] = {twoTo1, twoTo2, twoTo3, twoTo4, twoTo5, twoTo6, twoTo7, twoTo8, twoTo9, twoTo10, twoTo11};
+Color colorArr[13] = {twoTo1, twoTo2, twoTo3, twoTo4, twoTo5, twoTo6,
+                      twoTo7, twoTo8, twoTo9, twoTo10, twoTo11};
 
 /*
  * 构造函数: 1. 无参初始化，2. 含参初始化
@@ -108,17 +110,26 @@ vector<POINT> Game2048::EmptyGrid() {
     return emptyPos;
 }
 
+int Game2048::NewNum(int mode) {
+    if (mode == one) {
+        return 2;
+    }
+    else if (mode == two) {
+        return pow(2, rand() % 2 + 1);
+    }
+}
+
 // 输入空格坐标数组，从空格中选一个空格填入数字
 void Game2048::CreateNumber(vector<POINT> emptyPos) {
     mt19937 rng;
     rng.seed(GetTickCount());
     uniform_int_distribution<int> uniDis(0, emptyPos.size());
     int posInd = uniDis(rng);   // 从空格中取一个空格
-    this->_map[emptyPos[posInd].x][emptyPos[posInd].y] = 2;
+    this->_map[emptyPos[posInd].x][emptyPos[posInd].y] = this->NewNum(this->_genMode);
 }
 // 输入坐标，在当前坐标填入数字
 void Game2048::CreateNumber(int row, int col) {
-    this->_map[row][col] = 2;
+    this->_map[row][col] = this->NewNum(this->_genMode);
 }
 
 // 画图
@@ -137,7 +148,7 @@ void Game2048::Draw() {
             // 给每格标记数字
             if (this->_map[row][col] != 0) {
                 const char *numStr = to_string(this->_map[row][col]).c_str();
-                settextstyle(50, 0, "Comforta");
+                settextstyle(50, 0, "黑体");
                 setbkmode(TRANSPARENT);
 //                settextcolor(RGB(0, 0, 0));
                 int offsetWidth = (this->_gridWidth - textwidth(numStr)) / 2;
