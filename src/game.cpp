@@ -3,6 +3,7 @@
 //
 
 #include "game.h"
+#include "utils.h"
 #include <vector>
 #include <cmath>
 #include <random>
@@ -115,16 +116,13 @@ int Game2048::NewNum(int mode) {
         return 2;
     }
     else if (mode == two) {
-        return pow(2, rand() % 2 + 1);
+        return pow(2, uniformIntRand(1, 2));
     }
 }
 
 // 输入空格坐标数组，从空格中选一个空格填入数字
 void Game2048::CreateNumber(vector<POINT> emptyPos) {
-    mt19937 rng;
-    rng.seed(GetTickCount());
-    uniform_int_distribution<int> uniDis(0, emptyPos.size());
-    int posInd = uniDis(rng);   // 从空格中取一个空格
+    int posInd = uniformIntRand(0, emptyPos.size()-1);   // 从空格中取一个空格
     this->_map[emptyPos[posInd].x][emptyPos[posInd].y] = this->NewNum(this->_genMode);
 }
 // 输入坐标，在当前坐标填入数字

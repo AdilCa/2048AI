@@ -29,7 +29,7 @@ enum GenNewNumMode {one, two};
 class Game2048 {
 private:
     // 数值相关
-    GenNewNumMode _genMode = one;
+    GenNewNumMode _genMode = one;// 生成新填充数的模式
     int _maxGrid;               // 尺寸
     int _maxPower;              // 最大幂次
     std::vector<int> _gridVal;       // 格内所有可能值
