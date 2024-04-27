@@ -47,4 +47,6 @@ public:
 
     void CreateNumber(std::vector<POINT> emptyPos);  // 在空白位置随机生成新的数
     void CreateNumber(int row, int col);        // 在指定位置生成新的数
+
+    void Draw();    // 根据当前情况画界面
 };
