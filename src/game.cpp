@@ -42,6 +42,7 @@ Game2048::Game2048() {
     // 初始化UI部分
     this->_gridWidth = 100;
     this->_interval = 15;
+    this->_fontSize = 60;
     for (int row = 0; row < this->_maxGrid; ++row) {
         this->_ltPos.push_back(vector<POINT>(this->_maxGrid, {0, 0}));
         for (int col = 0; col < this->_maxGrid; ++col) {
@@ -146,9 +147,8 @@ void Game2048::Draw() {
             // 给每格标记数字
             if (this->_map[row][col] != 0) {
                 const char *numStr = to_string(this->_map[row][col]).c_str();
-                settextstyle(50, 0, "黑体");
+                settextstyle(this->_fontSize, 0, "Forte");
                 setbkmode(TRANSPARENT);
-//                settextcolor(RGB(0, 0, 0));
                 int offsetWidth = (this->_gridWidth - textwidth(numStr)) / 2;
                 int offsetHeight = (this->_gridWidth - textheight(numStr)) / 2;
                 outtextxy(this->_ltPos[row][col].x + offsetWidth, this->_ltPos[row][col].y + offsetHeight, numStr);

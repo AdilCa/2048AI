@@ -39,6 +39,7 @@ private:
     // UI相关
     int _gridWidth;             // 每格宽度
     int _interval;              // 两格间隔宽度
+    int _fontSize;              // 数字高度
     std::vector<std::vector<POINT>> _ltPos;        // 每格左上角坐标
 
 public:
