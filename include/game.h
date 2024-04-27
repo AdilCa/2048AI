@@ -8,8 +8,6 @@
 #include <easyx.h>
 #include <random>
 
-using namespace std;
-
 enum Color {
     zero    = RGB(205, 193, 180),
     twoTo1  = RGB(238, 228, 218),
@@ -31,22 +29,22 @@ private:
     // 数值相关
     int _maxGrid;               // 尺寸
     int _maxPower;              // 最大幂次
-    vector<int> _gridVal;       // 格内所有可能值
-    vector<vector<int>> _map;   // 每格内的值
+    std::vector<int> _gridVal;       // 格内所有可能值
+    std::vector<std::vector<int>> _map;   // 每格内的值
 
 
     // UI相关
     int _gridWidth;             // 每格宽度
     int _interval;              // 两格间隔宽度
-    vector<vector<POINT>> _ltPos;        // 每格左上角坐标
+    std::vector<std::vector<POINT>> _ltPos;        // 每格左上角坐标
 
 public:
 
     Game2048();                             // 默认初始化
     Game2048(int maxGrid, int maxPower);    // 带参初始化
 
-    vector<POINT> EmptyGrid();
+    std::vector<POINT> EmptyGrid();
 
-    void CreateNumber(vector<POINT> emptyPos);  // 在空白位置随机生成新的数
+    void CreateNumber(std::vector<POINT> emptyPos);  // 在空白位置随机生成新的数
     void CreateNumber(int row, int col);        // 在指定位置生成新的数
 };
