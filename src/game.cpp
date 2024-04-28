@@ -94,8 +94,13 @@ Game2048::Game2048(int maxGrid, int maxPower) {
               this->_maxGrid * this->_gridWidth + (this->_maxGrid+1) * this->_interval, 1);
     setbkcolor(back);
     cleardevice();
-    Draw();
+    this->Draw();
 }
+
+
+/*
+ * 游戏流程
+ */
 
 
 /*
@@ -187,33 +192,59 @@ void Game2048::Move() {
             moveRes = this->LeftMove(this->_map);
             this->_map = moveRes.mat;
             this->_record += moveRes.record;
-            cout << this->_record << endl;
+            if (moveRes.checkMove) {
+                this->CreateNumber(this->EmptyGrid());
+                this->Draw();
+            }
             break;
     }
 }
 
+// 左移方块
 Game2048::PackMatRec Game2048::LeftMove(std::vector<std::vector<int>> oMat) {
     int record = 0;
+    bool checkMove = false;
     int matSize = oMat.size();
     for (int row = 0; row < matSize; ++row) {
         std::vector<bool> merged(matSize, false);
         for (int col = 1; col < matSize; ++col) {
+            if (oMat[row][col] == 0)
+                // 若该数为零，则不操作
+                break;
             // 因为第一列一定不会动，所以不遍历第一列
             for (int i = col-1; i >= 0; --i) {
+                // 若该数左边为零，则左移
                 if (oMat[row][i] == 0) {
                     oMat[row][i] = oMat[row][i+1];
                     oMat[row][i+1] = 0;
+                    checkMove = true;
                 }
-                else if (oMat[row][i] == oMat[row][i+1] && !merged[i]) {
+                else if (!merged[i] && !merged[i+1] && oMat[row][i] == oMat[row][i+1]) {
+                    // 若该数与左边相等，且两数在本轮操作中都没有参与合成，则向左合并
                     oMat[row][i] += oMat[row][i+1];
                     oMat[row][i+1] = 0;
                     merged[i] = true;
                     record += oMat[row][i];
+                    checkMove = true;
                 }
                 else
                     break;
             }
         }
     }
-    return Game2048::PackMatRec {oMat, record};
+    return {oMat, record, checkMove};
+}
+
+// 检查游戏是否结束
+bool Game2048::CheckEnd() {
+    auto tmpMat = this->_map;
+    tmpMat.emplace_back(this->_maxGrid, -1);
+    for (int row = 0; row < this->_maxGrid; ++row) {
+        tmpMat[row].emplace_back(-1);
+        for (int col = 0; col < this->_maxGrid; ++col) {
+            if (tmpMat[row][col] == 0 || tmpMat[row+1][col] == tmpMat[row][col] || tmpMat[row][col+1] == tmpMat[row][col])
+                return false;
+        }
+    }
+    return true;
 }

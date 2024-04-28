@@ -58,7 +58,9 @@ public:
 
     void Draw();    // 根据当前情况画界面
 
-    struct PackMatRec {std::vector<std::vector<int>> mat; int record;};// 定义左移函数的返回值，mat为移动后的矩阵，record是本次移动累计的分数
+    // 定义左移函数的返回值，mat为移动后的矩阵，record是本次移动累计的分数，checkMove用于检查该次移动是否有效
+    struct PackMatRec {std::vector<std::vector<int>> mat; int record; bool checkMove;};
     void Move();    // 根据输入移动方块
     PackMatRec LeftMove(std::vector<std::vector<int>>); // 左移函数
+    bool CheckEnd();    // 检查是否游戏结束
 };
