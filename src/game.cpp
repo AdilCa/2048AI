@@ -4,6 +4,7 @@
 
 #include "game.h"
 #include "utils.h"
+#include <iostream>
 #include <vector>
 #include <cmath>
 #include <random>
@@ -22,6 +23,7 @@ Game2048::Game2048() {
     // 初始化数值部分
     this->_maxGrid = 4;
     this->_maxPower = 11;
+    this->_record = 0;
     // 初始化可能值数组
     this->_gridVal.push_back(0);
     for (int i = 1; i < this->_maxPower; ++i) {
@@ -61,6 +63,7 @@ Game2048::Game2048(int maxGrid, int maxPower) {
     // 初始化数值部分
     this->_maxGrid = maxGrid;
     this->_maxPower = maxPower;
+    this->_record = 0;
     // 初始化可能值数组
     this->_gridVal.push_back(0);
     for (int i = 1; i <= this->_maxPower; ++i) {
@@ -88,7 +91,7 @@ Game2048::Game2048(int maxGrid, int maxPower) {
         }
     }
     initgraph(this->_maxGrid * this->_gridWidth + (this->_maxGrid+1) * this->_interval,
-              this->_maxGrid * this->_gridWidth + (this->_maxGrid+1) * this->_interval);
+              this->_maxGrid * this->_gridWidth + (this->_maxGrid+1) * this->_interval, 1);
     setbkcolor(back);
     cleardevice();
     Draw();
@@ -155,4 +158,62 @@ void Game2048::Draw() {
             }
         }
     }
+}
+
+// 移动方块
+void Game2048::Move() {
+    switch (_getch()) {
+        case 'w':
+        case 'W':
+        case '8':
+        case 72:
+
+            break;
+        case 'd':
+        case 'D':
+        case '6':
+        case 77:
+            break;
+        case 's':
+        case 'S':
+        case '2':
+        case 80:
+            break;
+        case 'a':
+        case 'A':
+        case '4':
+        case 75:
+            Game2048::PackMatRec moveRes;
+            moveRes = this->LeftMove(this->_map);
+            this->_map = moveRes.mat;
+            this->_record += moveRes.record;
+            cout << this->_record << endl;
+            break;
+    }
+}
+
+Game2048::PackMatRec Game2048::LeftMove(std::vector<std::vector<int>> oMat) {
+    int record = 0;
+    int matSize = oMat.size();
+    for (int row = 0; row < matSize; ++row) {
+        std::vector<bool> merged(matSize, false);
+        for (int col = 1; col < matSize; ++col) {
+            // 因为第一列一定不会动，所以不遍历第一列
+            for (int i = col-1; i >= 0; --i) {
+                if (oMat[row][i] == 0) {
+                    oMat[row][i] = oMat[row][i+1];
+                    oMat[row][i+1] = 0;
+                }
+                else if (oMat[row][i] == oMat[row][i+1] && !merged[i]) {
+                    oMat[row][i] += oMat[row][i+1];
+                    oMat[row][i+1] = 0;
+                    merged[i] = true;
+                    record += oMat[row][i];
+                }
+                else
+                    break;
+            }
+        }
+    }
+    return Game2048::PackMatRec {oMat, record};
 }

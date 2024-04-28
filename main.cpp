@@ -4,7 +4,9 @@
 
 int main() {
     Game2048 game1;
-    getchar();
+    while (true) {
+        game1.Move();
+    }
     return 0;
 }
 

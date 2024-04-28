@@ -26,6 +26,8 @@ enum Color {
 
 enum GenNewNumMode {one, two};
 
+enum MoveDir {moveUp, moveDown, moveLeft, moveRight};
+
 class Game2048 {
 private:
     // 数值相关
@@ -34,6 +36,7 @@ private:
     int _maxPower;              // 最大幂次
     std::vector<int> _gridVal;       // 格内所有可能值
     std::vector<std::vector<int>> _map;   // 每格内的值
+    int _record;                 // 得分
 
 
     // UI相关
@@ -54,4 +57,8 @@ public:
     void CreateNumber(int row, int col);        // 在指定位置生成新的数
 
     void Draw();    // 根据当前情况画界面
+
+    struct PackMatRec {std::vector<std::vector<int>> mat; int record;};// 定义左移函数的返回值，mat为移动后的矩阵，record是本次移动累计的分数
+    void Move();    // 根据输入移动方块
+    PackMatRec LeftMove(std::vector<std::vector<int>>); // 左移函数
 };
